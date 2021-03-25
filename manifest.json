@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "version": "1.0",
-  "name": "NicoStyleMeet",
+  "version": "0.9",
+  "name": "NicoStyleMeetLapras",
   "content_scripts": [
     {
       "js": ["jquery.min.js","script.js"],
