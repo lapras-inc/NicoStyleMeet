@@ -89,7 +89,7 @@ function showBarrageClapping(message) {
 
     // ランダムな開始位置で複製する
     var min = 0;
-    var max = 100;  
+    var max = 100;
     var randomOffset = Math.floor( Math.random() * (max + 1 - min) ) + min;
 
     // アニメーション
@@ -165,4 +165,46 @@ function getPanelHeight() {
     panelHeight = panel.clientHeight;
   }
   return panelHeight;
+}
+
+  console.log('nico nico pre start')
+  startObservationMeetsStarted()
+});
+
+
+let isChatObserved = false
+function startObservationMeetsStarted() {
+  console.log('start check node')
+  const intervalId = setInterval(() => {
+    // チャット画面
+    const chats = document.getElementsByClassName('vvTMTb')
+    if (chats.length === 0) {
+      onCloseChat()
+      return;
+    }
+
+    // チャット画面開いている
+    // すでに監視中ならなにもしない
+    if (isChatObserved) {
+      return;
+    }
+    onOpenChat()
+  }, 2000)
+}
+
+function onCloseChat() {
+    if (isChatObserved) {
+      // すでに監視中でチャット画面がないなら監視を解除
+      observer.disconnect()
+      isChatObserved = false
+      console.log('nico nico end')
+    }
+}
+
+function onOpenChat() {
+    const chats = document.getElementsByClassName('vvTMTb')
+    // オブザーバー
+    observer.observe(chats[0], config);
+    isChatObserved = true
+    console.log('nico nico start')
 }
