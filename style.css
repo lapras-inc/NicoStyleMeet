@@ -3,6 +3,15 @@
   color: #fff;
   white-space: nowrap;
   z-index: 2147483647;
+  text-shadow:
+       2px  2px 1px #003366,
+      -2px  2px 1px #003366,
+       2px -2px 1px #003366,
+      -2px -2px 1px #003366,
+       2px  0px 1px #003366,
+       0px  2px 1px #003366,
+      -2px  0px 1px #003366,
+       0px -2px 1px #003366;
 }
 
 .lapras-logo {
