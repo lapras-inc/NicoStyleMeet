@@ -4,3 +4,9 @@
   white-space: nowrap;
   z-index: 2147483647;
 }
+
+.lapras-logo {
+  position: absolute;
+  width: 10px;
+  z-index: 2147483647;
+}

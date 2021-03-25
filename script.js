@@ -89,7 +89,7 @@ function showBarrageClapping(message) {
 
     // ランダムな開始位置で複製する
     var min = 0;
-    var max = 100;  
+    var max = 100;
     var randomOffset = Math.floor( Math.random() * (max + 1 - min) ) + min;
 
     // アニメーション
@@ -106,6 +106,41 @@ function showBarrageClapping(message) {
       }
     );
   }
+}
+
+function showLaprasLogo() {
+  const imgEl = document.createElement('img');
+  const sourceUrl = "https://i.gyazo.com/e562afacc2024f7919a07b6d7fce2ced.png"
+
+  const w_height = $(window).height();
+  const w_width = $(window).width();
+  const position_h = Math.floor(Math.random() * w_height)
+  const position_w = Math.floor(Math.random() * w_width);
+  const size = Math.floor(Math.random() * 1000);
+  const duration = Math.floor(Math.random() * 10000);
+
+  $imgEl = $(imgEl)
+  $imgEl.attr('src', sourceUrl)
+  $imgEl.addClass('lapras-logo')
+  $imgEl.css({'top': position_h, 'left': position_w})
+
+  document.body.appendChild(imgEl);
+  $imgEl.animate(
+    {
+      'width': `${size}px`
+    },
+    {
+      'duration': duration,
+      'easing': 'linear',
+      'complete': function() {
+          document.body.removeChild(imgEl);
+      }
+    }
+  );
+}
+
+function isLapras(message) {
+  return message === "lapras"
 }
 
 function isClapping(message) {
@@ -135,9 +170,15 @@ try {
 
   if (isClapping(message)) {
     showBarrageClapping(message)
-  } else {
-    showComment(message, userName)
+    return;
   }
+
+  if (isLapras(message)) {
+    showLaprasLogo()
+    return;
+  }
+
+  showComment(message, userName)
 }
 catch(e) {
   return;
