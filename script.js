@@ -34,7 +34,7 @@ function showComment(message, userName) {
 
   // コメントのスタイル作成
   var commentStyle = {
-    left: screenWidth + 'px',
+    left: screenWidth - getCommentPanelWidth() + 'px',
     top: Math.floor((screenHeight - panelHeight - letterSize) * Math.random()) + 'px',
     fontSize: letterSize + 'px',
   }
@@ -84,7 +84,7 @@ function showBarrageClapping(message) {
 
     // コメントのスタイル作成
     var commentStyle = {
-      left: screenWidth + 'px',
+      left: screenWidth - getCommentPanelWidth()  + 'px',
       top: Math.floor((screenHeight - letterSize) * Math.random()) + 'px',
       fontSize: letterSize + 'px',
     }
@@ -194,7 +194,7 @@ function showCommentWithCommend(message, userName) {
   }
 
   // 出現場所の調整
-  var left = screenWidth;
+  var left = screenWidth - commentPanelWidth;
   if (commands.includes('ue') || commands.includes('shita')) {
     left = (screenWidth - commentPanelWidth - comment.clientWidth) / 2
   }
