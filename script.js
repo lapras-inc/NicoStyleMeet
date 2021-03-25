@@ -34,7 +34,7 @@ function showComment(message, userName) {
 
   // コメントのスタイル作成
   var commentStyle = {
-    left: screenWidth + 'px',
+    left: screenWidth - getCommentPanelWidth() + 'px',
     top: Math.floor((screenHeight - panelHeight - letterSize) * Math.random()) + 'px',
     fontSize: letterSize + 'px',
   }
@@ -84,7 +84,7 @@ function showBarrageClapping(message) {
 
     // コメントのスタイル作成
     var commentStyle = {
-      left: screenWidth + 'px',
+      left: screenWidth - getCommentPanelWidth()  + 'px',
       top: Math.floor((screenHeight - letterSize) * Math.random()) + 'px',
       fontSize: letterSize + 'px',
     }
