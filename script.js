@@ -1,4 +1,5 @@
 var prevThread;
+let showComments = true
 const laprasImageUrl = "https://i.gyazo.com/e562afacc2024f7919a07b6d7fce2ced.png"
 const pacchoImageUrlList = [
   "https://i.gyazo.com/0e96c364c098c1b7d8dcd3adcf104318.png",
@@ -257,6 +258,27 @@ function havingCommand(message) {
   return message.match(pattern);
 }
 
+function isCommand(message) {
+  const pattern = /^::/g;
+  return message.match(pattern);
+}
+
+function doCommand(message) {
+  switch (message) {
+    case "::on":
+      showComments = true;
+      console.log("command: comments ON");
+      break;
+    case "::off":
+      showComments = false;
+      console.log("command: comments OFF");
+      break;
+    default:
+      // do nothing
+      console.log("undefined command.")
+  }
+}
+
 var observer = new MutationObserver(records=>{
 try {
   // テキスト欄の取得
@@ -275,6 +297,17 @@ try {
   const userNames = thread.getElementsByClassName('YTbUzc');
   // 最後の発言者取得
   const userName = thread.getElementsByClassName('YTbUzc')[userNames.length-1].innerText;
+
+  // コマンドの制御
+  if (isCommand(message)) {
+    doCommand(message);
+    return;
+  }
+
+  // コメント非表示ならなにもせずに終了
+  if (!showComments) {
+    return;
+  }
 
   if (isClapping(message)) {
     showBarrageClapping(message)
