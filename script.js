@@ -194,7 +194,7 @@ function showCommentWithCommend(message, userName) {
   }
 
   // 出現場所の調整
-  var left = screenWidth;
+  var left = screenWidth - commentPanelWidth;
   if (commands.includes('ue') || commands.includes('shita')) {
     left = (screenWidth - commentPanelWidth - comment.clientWidth) / 2
   }
