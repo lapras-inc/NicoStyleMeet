@@ -4,6 +4,7 @@ function showComment(message) {
   var screen = document.body; // よくない
   var screenHeight = screen.offsetHeight;
   var screenWidth = screen.offsetWidth;
+  var panelHeight = getPanelHeight();
 
   // コメントのエレメント作成
   var comment = document.createElement('span');
@@ -20,7 +21,7 @@ function showComment(message) {
   // コメントのスタイル作成
   var commentStyle = {
     left: screenWidth + 'px',
-    top: Math.floor((screenHeight - letterSize) * Math.random()) + 'px',
+    top: Math.floor((screenHeight - panelHeight - letterSize) * Math.random()) + 'px',
     fontSize: letterSize + 'px',
   }
   // スタイル設定
@@ -78,3 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
   var elem = document.body; // ほんとはチャットボックスを監視するべきだけどmeetに参加画面と判断するのめんどくさい これのせいで重い
   observer.observe(elem, config);
 });
+
+// コントロールパネル(マイクのON/OFFとかのボタンがあるところ)の高さを取得する
+function getPanelHeight() {
+  let panelHeight = 0;
+  const panel = document.querySelector('div[jscontroller="kAPMuc"]');
+  if (panel) {
+    panelHeight = panel.clientHeight;
+  }
+  return panelHeight;
+}
