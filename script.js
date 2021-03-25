@@ -150,13 +150,6 @@ const config = {
   childList: true,
   characterData: true
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  // オブザーバー
-  var elem = document.body; // ほんとはチャットボックスを監視するべきだけどmeetに参加画面と判断するのめんどくさい これのせいで重い
-  observer.observe(elem, config);
-});
-
 // コントロールパネル(マイクのON/OFFとかのボタンがあるところ)の高さを取得する
 function getPanelHeight() {
   let panelHeight = 0;
@@ -167,10 +160,12 @@ function getPanelHeight() {
   return panelHeight;
 }
 
+
+document.addEventListener('DOMContentLoaded', () => {
+  // オブザーバー
   console.log('nico nico pre start')
   startObservationMeetsStarted()
 });
-
 
 let isChatObserved = false
 function startObservationMeetsStarted() {
