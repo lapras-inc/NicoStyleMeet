@@ -1,4 +1,14 @@
 var prevThread;
+const laprasImageUrl = "https://i.gyazo.com/e562afacc2024f7919a07b6d7fce2ced.png"
+const pacchoImageUrlList = [
+  "https://i.gyazo.com/0e96c364c098c1b7d8dcd3adcf104318.png",
+  "https://i.gyazo.com/ee6f9c12588276e2516aa08e13a941cd.png",
+  "https://i.gyazo.com/dd0f6762f96bd307f54547a11a0feef0.png",
+  "https://i.gyazo.com/0286988198f7c0e11603c15110adfed8.png",
+  "https://i.gyazo.com/ef008867e94000f817e9ebbda73f6f73.png",
+  "https://i.gyazo.com/fca2e1faef68d083f438053766297853.png",
+  "https://i.gyazo.com/f2e4b79b0b5360998668aacb2ad26e6e.gif",
+]
 
 function showComment(message, userName) {
   if (userName === undefined || userName === null) {
@@ -108,9 +118,8 @@ function showBarrageClapping(message) {
   }
 }
 
-function showLaprasLogo() {
+function showImage(sourceUrl) {
   const imgEl = document.createElement('img');
-  const sourceUrl = "https://i.gyazo.com/e562afacc2024f7919a07b6d7fce2ced.png"
 
   const w_height = $(window).height();
   const w_width = $(window).width();
@@ -140,7 +149,11 @@ function showLaprasLogo() {
 }
 
 function isLapras(message) {
-  return message === "lapras"
+  return ["lapras", "ラプラス"].some((w) => w === message)
+}
+
+function isPaccho(message) {
+  return ["paccho", "ぱっちょ", "パッチョ"].some((w) => w === message)
 }
 
 function isClapping(message) {
@@ -174,13 +187,19 @@ try {
   }
 
   if (isLapras(message)) {
-    showLaprasLogo()
+    showImage(laprasImageUrl)
+    return;
+  }
+
+  if (isPaccho(message)) {
+    showImage(pacchoImageUrlList[Math.floor(Math.random() * pacchoImageUrlList.length)])
     return;
   }
 
   showComment(message, userName)
 }
 catch(e) {
+  console.log(e)
   return;
 }
 });
