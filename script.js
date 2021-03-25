@@ -109,8 +109,139 @@ function showBarrageClapping(message) {
   }
 }
 
+function showLaprasLogo() {
+  const imgEl = document.createElement('img');
+  const sourceUrl = "https://i.gyazo.com/e562afacc2024f7919a07b6d7fce2ced.png"
+
+  const w_height = $(window).height();
+  const w_width = $(window).width();
+  const position_h = Math.floor(Math.random() * w_height)
+  const position_w = Math.floor(Math.random() * w_width);
+  const size = Math.floor(Math.random() * 1000);
+  const duration = Math.floor(Math.random() * 10000);
+
+  $imgEl = $(imgEl)
+  $imgEl.attr('src', sourceUrl)
+  $imgEl.addClass('lapras-logo')
+  $imgEl.css({'top': position_h, 'left': position_w})
+
+  document.body.appendChild(imgEl);
+  $imgEl.animate(
+    {
+      'width': `${size}px`
+    },
+    {
+      'duration': duration,
+      'easing': 'linear',
+      'complete': function() {
+          document.body.removeChild(imgEl);
+      }
+    }
+  );
+}
+
+function showCommentWithCommend(message, userName) {
+  if (userName === undefined || userName === null) {
+    userName = ''
+  }
+  var screen = document.body; // よくない
+  var screenHeight = screen.offsetHeight;
+  var screenWidth = screen.offsetWidth;
+  var panelHeight = getPanelHeight();
+  var commentPanelWidth = getCommentPanelWidth()
+
+  // コメントのエレメント作成
+  var comment = document.createElement('span');
+
+  // コマンドとメッセージを分離
+  const pattern = /^([ue|shita|big|small|\s]+):(.*)$/;
+  groups = message.match(pattern);
+  commands = groups[1].split(' ')
+  massageText = groups[2]
+
+  // コメントへのメッセージの追加
+  comment.textContent = `${userName}: ${massageText}`;
+  // コメントのbodyへの追加
+  document.getElementsByTagName('body')[0].appendChild(comment);
+
+  var letterSize = screenHeight*0.05;
+
+  comment.setAttribute('class', 'comment');
+
+  // フォントサイズ変更
+  var fontSize = letterSize;
+  if (commands.includes('big')) {
+    fontSize = letterSize + 30.0
+  } else if (commands.includes('small')) {
+    fontSize = letterSize - 30.0
+  }
+
+  // コメントのスタイル作成
+  var top = Math.floor((screenHeight - fontSize) * Math.random());
+  if (commands.includes('ue')) {
+    top = 10
+  } else if (commands.includes('shita')) {
+    top = Math.floor(screenHeight - panelHeight - fontSize - 20)
+  }
+
+  // 出現場所の調整
+  var left = screenWidth;
+  if (commands.includes('ue') || commands.includes('shita')) {
+    left = (screenWidth - commentPanelWidth - comment.clientWidth) / 2
+  }
+
+  var commentStyle = {
+    left: left + 'px',
+    top: top + 'px',
+    fontSize: fontSize + 'px',
+  }
+
+  // スタイル設定
+  for(var prop in commentStyle) {
+    comment.style[prop] = commentStyle[prop];
+  }
+
+  // アニメーション
+  if (commands.includes('ue') || commands.includes('shita')) {
+    $(comment).animate(
+      {
+        'left': commentStyle.left + 'px'
+      },
+      {
+        'duration': 6000,
+        'easing': 'linear',
+        'complete': function() {
+          document.getElementsByTagName('body')[0].removeChild(comment);
+        }
+      }
+    );
+  } else {
+    $(comment).animate(
+      {
+        'left': -comment.offsetWidth + 'px'
+      },
+      {
+        'duration': 6000,
+        'easing': 'linear',
+        'complete': function() {
+          document.getElementsByTagName('body')[0].removeChild(comment);
+        }
+      }
+    );
+  }
+}
+
+function isLapras(message) {
+  return message === "lapras"
+}
+
 function isClapping(message) {
   const pattern = /^[8８]+$/g;
+  return message.match(pattern);
+}
+
+function havingCommand(message) {
+  const pattern = /^([ue|shita|big|small|\s]+):(.*)$/;
   return message.match(pattern);
 }
 
@@ -167,9 +298,20 @@ try {
 
   if (isClapping(message)) {
     showBarrageClapping(message)
-  } else {
-    showComment(message, userName)
+    return;
   }
+
+  if (isLapras(message)) {
+    showLaprasLogo()
+    return;
+  }
+
+  if (havingCommand(message)) {
+    showCommentWithCommend(message, userName)
+    return;
+  }
+
+  showComment(message, userName)
 }
 catch(e) {
   return;
@@ -191,7 +333,6 @@ function getPanelHeight() {
   }
   return panelHeight;
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
   // オブザーバー
@@ -234,4 +375,14 @@ function onOpenChat() {
     observer.observe(chats[0], config);
     isChatObserved = true
     console.log('nico nico start')
+}
+
+// コメントパネル(コメントするところ)の横幅を取得する
+function getCommentPanelWidth() {
+  let panelWidth = 0;
+  const panel = document.querySelector('div[jscontroller="kaNQxf"]');
+  if (panel) {
+    panelWidth = panel.clientWidth;
+  }
+  return panelWidth;
 }
