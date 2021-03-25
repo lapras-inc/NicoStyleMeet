@@ -1,4 +1,5 @@
 var prevThread;
+let showComments = true
 
 function showComment(message, userName) {
   if (userName === undefined || userName === null) {
@@ -113,11 +114,28 @@ function isClapping(message) {
   return message.match(pattern);
 }
 
-var observer = new MutationObserver(records=>{
-  if (!showComments) {
-    return;
-  }
+function isCommand(message) {
+  const pattern = /^::/g;
+  return message.match(pattern);
+}
 
+function doCommand(message) {
+  switch (message) {
+    case "::on":
+      showComments = true;
+      console.log("command: comments ON");
+      break;
+    case "::off":
+      showComments = false;
+      console.log("command: comments OFF");
+      break;
+    default:
+      // do nothing
+      console.log("undefined command.")
+  }
+}
+
+var observer = new MutationObserver(records=>{
 try {
   // テキスト欄の取得
   const thread = document.getElementsByClassName('z38b6 CnDs7d hPqowe')[0];
@@ -136,6 +154,16 @@ try {
   // 最後の発言者取得
   const userName = thread.getElementsByClassName('YTbUzc')[userNames.length-1].innerText;
 
+  // コマンドの制御
+  if (isCommand(message)) {
+    doCommand(message);
+    return;
+  }
+
+  // コメント非表示ならなにもせずに終了
+  if (!showComments) {
+    return;
+  }
 
   if (isClapping(message)) {
     showBarrageClapping(message)
@@ -206,21 +234,4 @@ function onOpenChat() {
     observer.observe(chats[0], config);
     isChatObserved = true
     console.log('nico nico start')
-
-  // コメント表示/非表示ボタンに関する処理はチャット開くたびに初期化する
-  initializeShowCommentButton();
-}
-
-let showComments = true
-function initializeShowCommentButton() {
-  // TODO: 仮でマイクボタンのクリックアクションを取得
-  // 毎回削除して登録する無理やり実装ですがごめんなさい
-  const myButton = document.querySelector('div[jscontroller="lCGUBd"]');
-  myButton.removeEventListener("click", turnShowComments);
-  myButton.addEventListener("click", turnShowComments);
-}
-
-function turnShowComments() {
-  showComments = !showComments;
-  console.log("コメント表示:" + showComments);
 }
